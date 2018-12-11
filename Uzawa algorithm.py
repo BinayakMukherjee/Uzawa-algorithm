@@ -994,53 +994,28 @@ def iterate(A, b, C, seed_u, seed_lambda):
     # print(A)
     #print(u0)
     iteration = 0
-    for iteration in range (0,100,1):
-        lambda1 = numpy.maximum(lambda0 + 0.0000001 * (C @ u0), numpy.zeros(3))
+    for iteration in range (0,1000000,1):
+        lambda1 = numpy.maximum(lambda0 + 4 * (C @ u0), numpy.zeros(20))
         # print("lambda 1 ", lambda1)
         # print(b.transpose()-(numpy.matrix.transpose(C) @ lambda1))
         # print(numpy.linalg.inv(A))
-        u1 = numpy.linalg.inv(A) @ (b.transpose() - (numpy.matrix.transpose(C) @ lambda1).transpose()).transpose()
+        u1 = numpy.linalg.inv(A) @ (b.transpose() - (C.transpose() @ lambda1).transpose()).transpose()
         # print ("u1", u1)
         # print("convergence = {}\n".format(u1 - u0))
         lambda0 = lambda1.transpose()
         diff = abs(u1.transpose()[0] - u0)
 
-        #if numpy.all(diff < 0.0001):
-         #   break
+        if numpy.all(diff < 0.00000001):
+            break
         u0 = u1.transpose()[0]
-        print(iteration)
+
         #print("lambda 0 new", lambda0)
         # print("u0 new ", u0)
 
         iteration += 1
+    print(iteration)
     print(u1)
     print(diff)
-    '''lambda2 = numpy.maximum(lambda1 + 0.001 * (numpy.vstack(C @ u1)), 0)
-    print(lambda2)
-    u2 = numpy.linalg.inv(A) @ (b - numpy.vstack(numpy.matrix.transpose(C) @ lambda2))
-    print (u2)
-
-    lambda3 = numpy.maximum(lambda2 + 0.001 * (numpy.vstack(C @ u2)), 0)
-    print(lambda3)
-    u3 = numpy.linalg.inv(A) @ (b - numpy.vstack(numpy.matrix.transpose(C) @ lambda3))
-    print(u3)
-
-    lambda4 = numpy.maximum(lambda3 + 0.001 * (numpy.vstack(C @ u3)), 0)
-    print(lambda4)
-    u4 = numpy.linalg.inv(A) @ (b - numpy.vstack(numpy.matrix.transpose(C) @ lambda4))
-    print(u4)
-
-    lambda5 = numpy.maximum(lambda4 + 0.001 * (numpy.vstack(C @ u4)), 0)
-    print(lambda5)
-    u5 = numpy.linalg.inv(A) @ (b - numpy.vstack(numpy.matrix.transpose(C) @ lambda5))
-    print(u5)
-
-
-    lambda6 = numpy.maximum(lambda5 + 0.001 * (numpy.vstack(C @ u5)), 0)
-    print(lambda6)
-    u6 = numpy.linalg.inv(A) @ (b - numpy.vstack(numpy.matrix.transpose(C) @ lambda6))
-    print(u6)'''
-
     return u1
 
 
@@ -1058,8 +1033,10 @@ def main():
         l.append(int(row[2]))
     E_expt_list = (read_integers('E_expt.txt'))
     E_expt = numpy.asarray(E_expt_list)
-    gamma_expt = [-0.1452, -0.3755, 0.2824] #gamma(h,k,l,E_expt) #
-    #print(gamma_expt)
+    gamma_expt = [-9064.19, -4532.09, -6658.12, -4251.34, -781.91, -25502.45, -11800.62, -12365.73, -5571.18, -72513.51,
+                  -36256.75, -82099.63, -47968.19, -12774.09, -42391.32, -12510.51, -9350.85, -131378.57, -62158.58,
+                  -68207.64] #gamma(h,k,l,E_expt) #
+    print(gamma_expt)
     # print(h)
     # print(k)
     # print(l)
